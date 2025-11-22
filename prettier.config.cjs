@@ -9,22 +9,22 @@ module.exports = {
 
   singleQuote: true,
 
-  quoteProps: "as-needed",
+  quoteProps: 'as-needed',
 
-  trailingComma: "es5",
+  trailingComma: 'es5',
 
   bracketSpacing: true,
 
-  arrowParens: "always",
+  arrowParens: 'always',
 
-  endOfLine: "lf",
+  endOfLine: 'lf',
 
-  proseWrap: "never",
+  proseWrap: 'never',
 
-  htmlWhitespaceSensitivity: "strict",
+  htmlWhitespaceSensitivity: 'strict',
 
   jsxSingleQuote: true,
   singleAttributePerLine: true,
   bracketSameLine: true,
-  plugins: ["prettier-plugin-tailwindcss"],
+  plugins: ['prettier-plugin-tailwindcss'],
 };
