@@ -1,4 +1,4 @@
-import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import { createBrowserRouter, RouterProvider } from 'react-router';
 import { createRoutes } from '@/routes';
 import type { UserType } from '@/types/layout';
 
