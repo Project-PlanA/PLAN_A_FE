@@ -11,7 +11,7 @@ export default function BottomLayout({ userType }: BottomLayoutProps) {
   const navItems = userType === 'agency' ? agencyNavItems : userNavItems;
 
   return (
-    <nav className='fixed bottom-0 left-1/2 z-1 h-[95px] w-full max-w-[390px] -translate-x-1/2 shadow-[0_-1px_2px_rgba(0,0,0,0.2)]'>
+    <nav className='bg-white fixed bottom-0 left-1/2 z-1 h-[95px] w-full max-w-[390px] -translate-x-1/2 shadow-[0_-1px_2px_rgba(0,0,0,0.2)]'>
       <ul className='flex justify-between px-3 py-4'>
         {navItems.map((item) => {
           const isActive = location.pathname === item.path;
