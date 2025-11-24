@@ -1,6 +1,6 @@
 import { Navigate } from 'react-router-dom';
-import GlobalLayout from '@/layouts/GlobalLayout';
-import AuthLayout from '@/layouts/AuthLayout';
+import GlobalLayout from '@/components/layouts/GlobalLayout';
+import AuthLayout from '@/components/layouts/AuthLayout';
 
 import UserLoginPage from '@/pages/auth/UserLoginPage';
 import AgencyLoginPage from '@/pages/auth/AgencyLoginPage';
@@ -23,7 +23,15 @@ export const createRoutes = (userType: UserType) => [
   {
     element: <GlobalLayout userType={userType} />,
     children: [
-      { index: true, element: <Navigate to="/mainpage" replace /> },
+      {
+        index: true,
+        element: (
+          <Navigate
+            to='/mainpage'
+            replace
+          />
+        ),
+      },
       { path: '/mainpage', element: <MainPage /> },
       { path: '/searchpage', element: <SearchPage /> },
       { path: '/locationpage', element: <LocationPage /> },
@@ -45,5 +53,13 @@ export const createRoutes = (userType: UserType) => [
     ],
   },
 
-  { path: '*', element: <Navigate to="/mainpage" replace /> },
+  {
+    path: '*',
+    element: (
+      <Navigate
+        to='/mainpage'
+        replace
+      />
+    ),
+  },
 ];
