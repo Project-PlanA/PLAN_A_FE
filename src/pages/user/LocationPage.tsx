@@ -89,10 +89,7 @@ export default function LocationPage() {
       />
 
       <main className='relative flex-1 bg-white'>
-        <LocationMapSection
-          isVisible={!isListMode}
-          onCurrentLocation={handleCurrentLocation}
-        />
+        <LocationMapSection isVisible={!isListMode} />
         <LocationListSection
           isVisible={isListMode}
           agencies={agencies}
