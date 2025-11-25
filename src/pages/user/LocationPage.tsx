@@ -15,7 +15,7 @@ export default function LocationPage() {
   const navigate = useNavigate();
   const [keyword, setKeyword] = useState('');
   const [agencies, setAgencies] = useState<AgencySummary[]>([]);
-  const [isListMode, setIsListMode] = useState(true); 
+  const [isListMode, setIsListMode] = useState(true);
 
   const { mutateAsync: searchMutate, isPending: isSearching } = useAgencySearch();
   const { mutateAsync: nearbyMutate, isPending: isNearbyLoading } = useNearbyAgencySearch();
@@ -78,9 +78,7 @@ export default function LocationPage() {
   };
 
   const resultCountLabel =
-    Array.isArray(agencies) && agencies.length > 0
-      ? `${agencies.length}개의 기관`
-      : '검색 결과 없음';
+    Array.isArray(agencies) && agencies.length > 0 ? `${agencies.length}개의 기관` : '0개의 기관';
 
   return (
     <div className='flex min-h-screen flex-col bg-[#F5F7FB]'>
@@ -90,8 +88,11 @@ export default function LocationPage() {
         onCurrentLocation={handleCurrentLocation}
       />
 
-      <main className='relative flex-1 bg-[#c4c4c4]/20'>
-        <LocationMapSection isVisible={!isListMode} />
+      <main className='relative flex-1 bg-white'>
+        <LocationMapSection
+          isVisible={!isListMode}
+          onCurrentLocation={handleCurrentLocation}
+        />
         <LocationListSection
           isVisible={isListMode}
           agencies={agencies}
@@ -99,6 +100,7 @@ export default function LocationPage() {
           keyword={keyword}
           resultCountLabel={resultCountLabel}
           onClickAgency={handleAgencyClick}
+          onCurrentLocation={handleCurrentLocation}
         />
 
         <div className='fixed bottom-28 left-1/2 z-20 -translate-x-1/2'>
