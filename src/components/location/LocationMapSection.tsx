@@ -2,21 +2,15 @@ import CurrentLocationIcon from '../../assets/CurrentLocationIcon.png';
 
 type LocationMapSectionProps = {
   isVisible: boolean;
-  onCurrentLocation: () => void;
 };
 
-export default function LocationMapSection({
-  isVisible,
-  onCurrentLocation,
-}: LocationMapSectionProps) {
+export default function LocationMapSection({ isVisible }: LocationMapSectionProps) {
   if (!isVisible) return null;
 
   return (
     <>
       <div className='px-5'>
-        <button
-          type='button'
-          onClick={onCurrentLocation}>
+        <button type='button'>
           <img
             src={CurrentLocationIcon}
             alt='현위치 버튼'
