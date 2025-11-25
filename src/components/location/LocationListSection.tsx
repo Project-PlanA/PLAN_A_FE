@@ -1,5 +1,6 @@
 import AgencyListItem from './AgencyListItem';
 import type { AgencySummary } from '../../types/agency';
+import CurrentLocationIcon from '../../assets/B_CurrentLocationIcon.png';
 
 type Props = {
   isVisible: boolean;
@@ -8,6 +9,7 @@ type Props = {
   keyword: string;
   resultCountLabel: string;
   onClickAgency: (orgCd: string) => void;
+  onCurrentLocation: () => void;
 };
 
 export default function LocationListSection({
@@ -17,6 +19,7 @@ export default function LocationListSection({
   keyword,
   resultCountLabel,
   onClickAgency,
+  onCurrentLocation,
 }: Props) {
   if (!isVisible) return null;
 
@@ -24,28 +27,36 @@ export default function LocationListSection({
 
   return (
     <>
-      <div className="flex items-center justify-between px-5 pt-3 text-xs text-gray-500">
+      <div className='px-5'>
+        <button
+          type='button'
+          onClick={onCurrentLocation}>
+          <img
+            src={CurrentLocationIcon}
+            alt='현위치 버튼'
+            className='h-[35px] w-[85px]'
+          />
+        </button>
+      </div>
+      <div className='flex items-center justify-between px-5 pt-3 text-xs text-gray-500'>
         <span>{resultCountLabel}</span>
         <button
-          type="button"
-          className="flex items-center gap-1 text-xs text-gray-500"
-        >
+          type='button'
+          className='flex items-center gap-1 text-xs text-gray-500'>
+          {' '}
+          <span className='inline-block h-2 w-2 rounded-full bg-[#00c4ff]'></span>
           <span>거리순</span>
         </button>
       </div>
 
-      <div className="mt-1 h-[calc(100vh-176px)] w-full">
-        <div className="h-full w-full overflow-y-auto px-5 pt-2 pb-24">
+      <div className='mt-1 h-[calc(100vh-176px)] w-full'>
+        <div className='h-full w-full overflow-y-auto px-5 pt-2 pb-24'>
           {loading && (
-            <p className="py-4 text-center text-sm text-gray-500">
-              기관을 불러오는 중입니다...
-            </p>
+            <p className='py-4 text-center text-sm text-gray-500'>기관을 불러오는 중입니다...</p>
           )}
 
           {!loading && safeAgencies.length === 0 && keyword.trim().length >= 2 && (
-            <p className="py-4 text-center text-sm text-gray-500">
-              검색 결과가 없습니다.
-            </p>
+            <p className='py-4 text-center text-sm text-gray-500'>검색 결과가 없습니다.</p>
           )}
 
           {!loading &&
