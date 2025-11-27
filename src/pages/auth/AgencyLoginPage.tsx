@@ -1,8 +1,9 @@
 import { Button } from '@/components/ui/button';
 import { Field, FieldError, FieldLabel, FieldSet } from '@/components/ui/field';
 import { Input } from '@/components/ui/input';
+import { useLogin } from '@/hooks/auth/useAuth';
 import { useForm, type SubmitHandler } from 'react-hook-form';
-import { Link } from 'react-router';
+import { Link, useNavigate } from 'react-router';
 
 export interface LoginFormValues {
   username: string;
@@ -10,6 +11,8 @@ export interface LoginFormValues {
 }
 
 export default function AgencyLoginPage() {
+  const navigator = useNavigate();
+  const { mutate: postLogin } = useLogin();
   const {
     register,
     handleSubmit,
@@ -24,6 +27,11 @@ export default function AgencyLoginPage() {
 
   const onSubmit: SubmitHandler<LoginFormValues> = (data) => {
     console.log(data);
+    postLogin(data, {
+      onSuccess: () => {
+        navigator('/mainpage');
+      },
+    });
   };
 
   return (
