@@ -4,7 +4,6 @@ import AuthLayout from '@/components/layouts/AuthLayout';
 
 import UserLoginPage from '@/pages/auth/UserLoginPage';
 import AgencyLoginPage from '@/pages/auth/AgencyLoginPage';
-import AgencySignUpPage from '@/pages/auth/AgencySignUpPage';
 
 import MainPage from '@/pages/user/MainPage';
 import SearchPage from '@/pages/user/SearchPage';
@@ -18,6 +17,11 @@ import ConsultManagePage from '@/pages/agency/ConsultManagePage';
 import MatchManagePage from '@/pages/agency/MatchManagePage';
 
 import type { UserType } from '@/types/layout';
+
+import SignupLayout from '@/components/layouts/SignUpLayout';
+import AgencySignupStep1 from '@/pages/auth/AgencySignupStep1';
+import AgencySignupStep2 from '@/pages/auth/AgencySignupStep2';
+import KakaoCallbackPage from '@/pages/auth/KakaoCallbackPage';
 
 export const createRoutes = (userType: UserType) => [
   {
@@ -48,8 +52,27 @@ export const createRoutes = (userType: UserType) => [
     element: <AuthLayout />,
     children: [
       { path: '/login', element: <UserLoginPage /> },
+      { path: '/kakao/callback', element: <KakaoCallbackPage /> },
       { path: '/agency-login', element: <AgencyLoginPage /> },
-      { path: '/agency-signup', element: <AgencySignUpPage /> },
+
+      {
+        path: '/agency-signup',
+        element: <SignupLayout />,
+        children: [
+          {
+            index: true,
+            element: (
+              <Navigate
+                to='step1'
+                replace
+              />
+            ),
+          },
+          // 실제 단계별 페이지들
+          { path: 'step1', element: <AgencySignupStep1 /> },
+          { path: 'step2', element: <AgencySignupStep2 /> },
+        ],
+      },
     ],
   },
 
