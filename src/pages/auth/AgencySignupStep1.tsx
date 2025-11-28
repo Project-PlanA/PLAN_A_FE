@@ -21,14 +21,33 @@ export default function AgencySignupStep1() {
   const [isListVisible, setIsListVisible] = useState(false);
 
   // 입력 및 검색 최적화
+  const [list, setList] = useState<AgencySummary[]>([]);
+  const { mutateAsync: searchAgencyList } = useAgencySearch();
   useEffect(() => {
     const timer = setTimeout(() => {
-      setDebouncedKeyword(keyword);
+      setDebouncedKeyword(keyword.trim());
     }, 500);
     return () => clearTimeout(timer);
   }, [keyword]);
 
-  const { data: list } = useAgencySearch(debouncedKeyword);
+  useEffect(() => {
+    const fetchList = async () => {
+      if (!debouncedKeyword) {
+        setList([]);
+        return;
+      }
+
+      try {
+        const data = await searchAgencyList(debouncedKeyword);
+        setList(data);
+      } catch (error) {
+        console.error(error);
+        alert('기관 목록을 불러오는 중 오류가 발생했습니다.');
+      }
+    };
+
+    fetchList();
+  }, [debouncedKeyword, searchAgencyList]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
