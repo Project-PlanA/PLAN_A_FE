@@ -22,12 +22,15 @@ export function useLogin() {
     },
   });
 }
-
 export function useKakaoLogin() {
   const navigate = useNavigate();
 
+  const redirectUri = import.meta.env.DEV
+    ? import.meta.env.VITE_KAKAO_REDIRECT_URI
+    : import.meta.env.VITE_KAKAO_REDIRECT_URI_PROD;
+
   return useMutation({
-    mutationFn: (code: string) => getKakaoLogin(code),
+    mutationFn: (code: string) => getKakaoLogin(code, redirectUri),
     onSuccess: (data) => {
       const { accessToken } = data;
       localStorage.setItem('accessToken', accessToken);
