@@ -31,7 +31,7 @@ export const createRoutes = (userType: UserType) => [
         index: true,
         element: (
           <Navigate
-            to='/mainpage'
+            to='/login'
             replace
           />
         ),
