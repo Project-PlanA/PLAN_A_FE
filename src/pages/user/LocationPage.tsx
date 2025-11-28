@@ -42,11 +42,12 @@ export default function LocationPage() {
       setIsListMode(true);
     } catch (e) {
       console.error(e);
+      alert('기관 목록을 불러오지 못했어요.');
     }
   };
 
   const handleAgencyClick = (orgCd: string) => {
-    navigate(`/locationpage/${orgCd}`); //예약페이지 추가 예정
+    navigate(`/locationpage/${orgCd}`); // 예약페이지 추가 예정
   };
 
   const handleCurrentLocation = () => {
@@ -64,6 +65,7 @@ export default function LocationPage() {
           setIsListMode(true);
         } catch (e) {
           console.error(e);
+          alert('주변 기관을 불러오지 못했어요.');
         }
       },
       (err) => {
