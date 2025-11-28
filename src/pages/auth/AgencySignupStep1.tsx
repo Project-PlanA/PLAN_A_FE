@@ -25,7 +25,7 @@ export default function AgencySignupStep1() {
   const { mutateAsync: searchAgencyList } = useAgencySearch();
   useEffect(() => {
     const timer = setTimeout(() => {
-      setDebouncedKeyword(keyword);
+      setDebouncedKeyword(keyword.trim());
     }, 500);
     return () => clearTimeout(timer);
   }, [keyword]);
