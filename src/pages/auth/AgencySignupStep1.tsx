@@ -21,14 +21,33 @@ export default function AgencySignupStep1() {
   const [isListVisible, setIsListVisible] = useState(false);
 
   // 입력 및 검색 최적화
+  const [list, setList] = useState<AgencySummary[]>([]);
+  const { mutateAsync: searchAgencyList } = useAgencySearch();
   useEffect(() => {
     const timer = setTimeout(() => {
-      setDebouncedKeyword(keyword);
+      setDebouncedKeyword(keyword.trim());
     }, 500);
     return () => clearTimeout(timer);
   }, [keyword]);
 
-  const { data: list } = useAgencySearch(debouncedKeyword);
+  useEffect(() => {
+    const fetchList = async () => {
+      if (!debouncedKeyword) {
+        setList([]);
+        return;
+      }
+
+      try {
+        const data = await searchAgencyList(debouncedKeyword);
+        setList(data);
+      } catch (error) {
+        console.error(error);
+        alert('기관 목록을 불러오는 중 오류가 발생했습니다.');
+      }
+    };
+
+    fetchList();
+  }, [debouncedKeyword, searchAgencyList]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
@@ -40,6 +59,7 @@ export default function AgencySignupStep1() {
       setValue('zipAddr', '');
       setValue('dtlAddr', '');
       setValue('tel', '');
+      setList([]);
     }
   };
 
@@ -82,7 +102,7 @@ export default function AgencySignupStep1() {
                     key={item.orgCd}
                     onClick={() => handleSelectAgency(item)}
                     className='cursor-pointer border-b p-3 last:border-b-0 hover:bg-gray-100'>
-                    <div className=''>{item.orgName}</div>
+                    <div>{item.orgName}</div>
                     <div className='text-xs text-gray-500'>{item.zipAddr}</div>
                   </li>
                 ))}
@@ -91,12 +111,12 @@ export default function AgencySignupStep1() {
           </div>
         </div>
 
-        <div className=''>
+        <div>
           <div>
             <label className='text-sm text-gray-700'>
               주소<span className='text-xs text-blue-500'>●</span>
             </label>
-            <div className=''>
+            <div>
               <Input
                 {...register('zipAddr')}
                 readOnly

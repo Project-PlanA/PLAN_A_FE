@@ -36,9 +36,17 @@ interface KakaoLoginResponse {
   userId: number;
   name: string;
 }
+export const getKakaoLogin = async (
+  code: string,
+  redirectUri: string
+): Promise<KakaoLoginResponse> => {
+  const { data } = await instance.get('/login/oauth2/code/kakao', {
+    params: {
+      code,
+      redirectUri,
+    },
+  });
 
-export const getKakaoLogin = async (code: string): Promise<KakaoLoginResponse> => {
-  const { data } = await instance.get(`/login/oauth2/code/kakao`, { params: { code } });
   console.log(data);
   return data;
 };
