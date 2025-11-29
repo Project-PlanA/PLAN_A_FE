@@ -22,6 +22,7 @@ import SignupLayout from '@/components/layouts/SignUpLayout';
 import AgencySignupStep1 from '@/pages/auth/AgencySignupStep1';
 import AgencySignupStep2 from '@/pages/auth/AgencySignupStep2';
 import KakaoCallbackPage from '@/pages/auth/KakaoCallbackPage';
+import ChatDetailPage from '@/pages/user/Chat-Detail-Page';
 
 export const createRoutes = (userType: UserType) => [
   {
@@ -40,6 +41,7 @@ export const createRoutes = (userType: UserType) => [
       { path: '/searchpage', element: <SearchPage /> },
       { path: '/locationpage', element: <LocationPage /> },
       { path: '/chatpage', element: <ChatPage /> },
+      { path: '/chat-detail-page/:id', element: <ChatDetailPage /> },
       { path: '/mypage', element: <MyPage /> },
       { path: '/agency/main', element: <AgencyMainPage /> },
       { path: '/agency/search', element: <AgencySearchPage /> },
