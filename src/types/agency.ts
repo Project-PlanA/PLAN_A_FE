@@ -15,3 +15,32 @@ export interface AgencySummary {
 export interface AgencyDetail extends AgencySummary {
   orgType: string;
 }
+// 채용 공고 목록 타입
+export interface JobSummary {
+  jobId: string;
+  oranNm: string; 
+  recrtTitle: string; 
+  jobclsNm: string;
+  region: string; 
+  toDd: string; 
+  deadline: string;
+  createDy: string; 
+}
+// 채용 공고 상세 타입
+export interface JobDetail {
+  jobId: string;
+  recrtTitle: string;
+  oranNm: string;
+  toDd: string;
+  deadline: string;
+  emplymShpNm: string;
+  jobclsNm: string;
+  clltPrnnum: string;
+  detCnts: string;
+  etcItm: string;
+  plDetAddr: string;
+  plbizNm: string;
+  acptMthd: string;
+  clerkContt: string;
+  createDy: string;
+}
