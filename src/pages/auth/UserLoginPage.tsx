@@ -5,7 +5,9 @@ import { useNavigate } from 'react-router';
 export default function UserLoginPage() {
   const navigator = useNavigate();
   const REST_API_KEY = import.meta.env.VITE_KAKAO_REST_API_KEY;
-  const REDIRECT_URI = import.meta.env.VITE_KAKAO_REDIRECT_URI;
+  const REDIRECT_URI = import.meta.env.DEV
+    ? import.meta.env.VITE_KAKAO_REDIRECT_URI
+    : import.meta.env.VITE_KAKAO_REDIRECT_URI_PROD;
 
   const handleKakaoLogin = () => {
     const kakaoAuthUrl = `https://kauth.kakao.com/oauth/authorize?client_id=${REST_API_KEY}&redirect_uri=${REDIRECT_URI}&response_type=code`;

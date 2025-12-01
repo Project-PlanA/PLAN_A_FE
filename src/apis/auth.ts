@@ -30,11 +30,12 @@ export const postLogin = async (body: LoginRequest): Promise<LoginResponse> => {
   return data;
 };
 
-interface KakaoLoginResponse {
-  accessToken: string;
-  isNewUser: boolean;
+export interface KakaoLoginResponse {
   userId: number;
+  kakaoId: string;
   name: string;
+  accessToken: string;
+  newUser: boolean;
 }
 export const getKakaoLogin = async (
   code: string,

@@ -25,63 +25,81 @@ import KakaoCallbackPage from '@/pages/auth/KakaoCallbackPage';
 import ChatDetailPage from '@/pages/user/Chat-Detail-Page';
 import LocationReservationPage from '@/pages/user/Location-Reservation-Page';
 import SearchDetailPage from '@/pages/user/Search-Detail-Page';
+import ProtectedLayout from '@/components/layouts/ProtectedLayout';
+import GuestOnlyLayout from '@/components/layouts/GuestOnlyLayout';
 
 export const createRoutes = (userType: UserType) => [
   {
-    element: <GlobalLayout userType={userType} />,
+    element: <ProtectedLayout />,
     children: [
       {
-        index: true,
-        element: (
-          <Navigate
-            to='/login'
-            replace
-          />
-        ),
-      },
-      { path: '/mainpage', element: <MainPage /> },
-      { path: '/searchpage', element: <SearchPage /> },
-      { path: '/searchpage/:id', element: <SearchDetailPage /> },
-      { path: '/locationpage', element: <LocationPage /> },
-      { path: '/location-reservation/:orgCd', element: <LocationReservationPage /> },
-      { path: '/chatpage', element: <ChatPage /> },
-      { path: '/chat-detail-page/:id', element: <ChatDetailPage /> },
-      { path: '/mypage', element: <MyPage /> },
-      { path: '/agency/main', element: <AgencyMainPage /> },
-      { path: '/agency/search', element: <AgencySearchPage /> },
-      { path: '/agency/consult', element: <ConsultManagePage /> },
-      { path: '/agency/match', element: <MatchManagePage /> },
-    ],
-  },
-
-  {
-    element: <AuthLayout />,
-    children: [
-      { path: '/login', element: <UserLoginPage /> },
-      { path: '/kakao/callback', element: <KakaoCallbackPage /> },
-      { path: '/agency-login', element: <AgencyLoginPage /> },
-
-      {
-        path: '/agency-signup',
-        element: <SignupLayout />,
+        element: <GlobalLayout userType={userType} />,
         children: [
           {
             index: true,
             element: (
               <Navigate
-                to='step1'
+                to='/mainpage'
                 replace
               />
             ),
           },
-          // 실제 단계별 페이지들
-          { path: 'step1', element: <AgencySignupStep1 /> },
-          { path: 'step2', element: <AgencySignupStep2 /> },
+          { path: '/mainpage', element: <MainPage /> },
+
+          { path: '/searchpage', element: <SearchPage /> },
+          { path: '/searchpage/:id', element: <SearchDetailPage /> },
+
+          { path: '/locationpage', element: <LocationPage /> },
+          { path: '/location-reservation/:orgCd', element: <LocationReservationPage /> },
+
+          { path: '/chatpage', element: <ChatPage /> },
+          { path: '/chat-detail-page/:id', element: <ChatDetailPage /> },
+          { path: '/mypage', element: <MyPage /> },
+
+          { path: '/agency/main', element: <AgencyMainPage /> },
+          { path: '/agency/search', element: <AgencySearchPage /> },
+          { path: '/agency/consult', element: <ConsultManagePage /> },
+          { path: '/agency/match', element: <MatchManagePage /> },
         ],
       },
     ],
   },
 
+  {
+    element: <GuestOnlyLayout />,
+    children: [
+      {
+        element: <AuthLayout />,
+        children: [
+          { path: '/login', element: <UserLoginPage /> },
+          { path: '/agency-login', element: <AgencyLoginPage /> },
+          { path: '/kakao/callback', element: <KakaoCallbackPage /> },
+
+          {
+            path: '/agency-signup',
+            element: <SignupLayout />,
+            children: [
+              {
+                index: true,
+                element: (
+                  <Navigate
+                    to='step1'
+                    replace
+                  />
+                ),
+              },
+              { path: 'step1', element: <AgencySignupStep1 /> },
+              { path: 'step2', element: <AgencySignupStep2 /> },
+            ],
+          },
+        ],
+      },
+    ],
+  },
+
+  // -----------------------------------------------------
+  // 3. 예외 처리 (Catch all)
+  // -----------------------------------------------------
   {
     path: '*',
     element: (
