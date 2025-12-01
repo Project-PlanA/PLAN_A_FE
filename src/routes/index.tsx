@@ -23,6 +23,8 @@ import AgencySignupStep1 from '@/pages/auth/AgencySignupStep1';
 import AgencySignupStep2 from '@/pages/auth/AgencySignupStep2';
 import KakaoCallbackPage from '@/pages/auth/KakaoCallbackPage';
 import ChatDetailPage from '@/pages/user/Chat-Detail-Page';
+import LocationReservationPage from '@/pages/user/Location-Reservation-Page';
+import SearchDetailPage from '@/pages/user/Search-Detail-Page';
 
 export const createRoutes = (userType: UserType) => [
   {
@@ -39,7 +41,9 @@ export const createRoutes = (userType: UserType) => [
       },
       { path: '/mainpage', element: <MainPage /> },
       { path: '/searchpage', element: <SearchPage /> },
+      { path: '/searchpage/:id', element: <SearchDetailPage /> },
       { path: '/locationpage', element: <LocationPage /> },
+      { path: '/location-reservation/:orgCd', element: <LocationReservationPage /> },
       { path: '/chatpage', element: <ChatPage /> },
       { path: '/chat-detail-page/:id', element: <ChatDetailPage /> },
       { path: '/mypage', element: <MyPage /> },

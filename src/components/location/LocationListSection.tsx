@@ -34,7 +34,7 @@ export default function LocationListSection({
           <img
             src={CurrentLocationIcon}
             alt='현위치 버튼'
-            className='h-[35px] w-[85px]'
+            className='h-[35px] w-[85px] mt-5'
           />
         </button>
       </div>
@@ -43,7 +43,6 @@ export default function LocationListSection({
         <button
           type='button'
           className='flex items-center gap-1 text-xs text-gray-500'>
-          {' '}
           <span className='inline-block h-2 w-2 rounded-full bg-[#00c4ff]'></span>
           <span>거리순</span>
         </button>
