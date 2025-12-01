@@ -1,97 +1,103 @@
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router';
+import type { AgencySummary } from '../../types/agency';
 import LocationSearchSection from '../../components/location/LocationSearchSection';
-import LocationMapSection from '../../components/location/LocationMapSection';
 import LocationListSection from '../../components/location/LocationListSection';
+import LocationMapSection from '../../components/location/LocationMapSection';
 
 import ListIcon from '../../assets/ListIcon.png';
 import MapIcon from '../../assets/MapIcon.png';
 
-import type { AgencySummary } from '../../types/agency';
-import { useAgencySearch, useNearbyAgencySearch } from '../../hooks/agency/useAgencySearch';
+import { instance } from '../../apis/instance';
+
+type ListResponseShape =
+  | AgencySummary[]
+  | {
+      items?: AgencySummary[];
+      totalCount?: number;
+      data?: {
+        items?: AgencySummary[];
+        totalCount?: number;
+      };
+    };
 
 export default function LocationPage() {
   const navigate = useNavigate();
   const [keyword, setKeyword] = useState('');
+  const [loading, setLoading] = useState(false);
   const [agencies, setAgencies] = useState<AgencySummary[]>([]);
+  const [totalCount, setTotalCount] = useState<number | null>(null);
+
   const [isListMode, setIsListMode] = useState(true);
-
-  const { mutateAsync: searchMutate, isPending: isSearching } = useAgencySearch();
-  const { mutateAsync: nearbyMutate, isPending: isNearbyLoading } = useNearbyAgencySearch();
-
-  const loading = isSearching || isNearbyLoading;
-
-  const handleSearch = async (value: string) => {
-    setKeyword(value);
-    const trimmed = value.trim();
-
-    if (trimmed.length === 0) {
-      setAgencies([]);
-      setIsListMode(false);
-      return;
-    }
-
-    if (trimmed.length < 2) {
-      return;
-    }
-
-    try {
-      const data = await searchMutate(trimmed);
-      setAgencies(data);
-      setIsListMode(true);
-    } catch (e) {
-      console.error(e);
-      alert('기관 목록을 불러오지 못했어요.');
-    }
-  };
-
-  const handleAgencyClick = (orgCd: string) => {
-    navigate(`/locationpage/${orgCd}`); // 예약페이지 추가 예정
-  };
-
-  const handleCurrentLocation = () => {
-    if (!navigator.geolocation) {
-      alert('위치 정보를 가져오지 못했어요.');
-      return;
-    }
-
-    navigator.geolocation.getCurrentPosition(
-      async (pos) => {
-        const { latitude, longitude } = pos.coords;
-        try {
-          const data = await nearbyMutate({ lat: latitude, lng: longitude });
-          setAgencies(data);
-          setIsListMode(true);
-        } catch (e) {
-          console.error(e);
-          alert('주변 기관을 불러오지 못했어요.');
-        }
-      },
-      (err) => {
-        console.error(err);
-        alert('위치 정보를 가져오지 못했어요.');
-      }
-    );
-  };
 
   const toggleListMode = () => {
     setIsListMode((prev) => !prev);
   };
 
-  const resultCountLabel =
-    Array.isArray(agencies) && agencies.length > 0 ? `${agencies.length}개의 기관` : '0개의 기관';
+  useEffect(() => {
+    let cancelled = false;
+
+    const fetchAgencies = async () => {
+      setLoading(true);
+      try {
+        const res = await instance.get<ListResponseShape>('/api/agencies/search', {
+          params: { keyword },
+        });
+
+        if (cancelled) return;
+
+        const body = res.data;
+        let items: AgencySummary[] = [];
+        let count: number | null = null;
+
+        if (Array.isArray(body)) {
+          items = body;
+        } else if (body.data?.items && Array.isArray(body.data.items)) {
+          items = body.data.items;
+          if (typeof body.data.totalCount === 'number') count = body.data.totalCount;
+        } else if (body.items && Array.isArray(body.items)) {
+          items = body.items;
+          if (typeof body.totalCount === 'number') count = body.totalCount;
+        }
+
+        setAgencies(items);
+        setTotalCount(count ?? items.length);
+      } catch {
+        if (cancelled) return;
+        setAgencies([]);
+        setTotalCount(0);
+      }
+      if (!cancelled) {
+        setLoading(false);
+      }
+    };
+
+    fetchAgencies();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [keyword]);
+
+  const resultCountLabel = `총 ${totalCount ?? agencies.length}개의 기관`;
+
+  const handleCurrentLocation = () => {};
+
+  const handleAgencyClick = (orgCd: string) => {
+    navigate(`/location-reservation/${orgCd}`);
+  };
 
   return (
     <div className='flex min-h-screen flex-col bg-[#F5F7FB]'>
       <LocationSearchSection
         keyword={keyword}
-        onSearch={handleSearch}
+        onSearch={(value) => setKeyword(value)}
         onCurrentLocation={handleCurrentLocation}
       />
 
       <main className='relative flex-1 bg-white'>
         <LocationMapSection isVisible={!isListMode} />
+
         <LocationListSection
           isVisible={isListMode}
           agencies={agencies}
