@@ -217,6 +217,7 @@ export default function ChatPage() {
                     </div>
 
                     {/* 예약 취소 버튼 */}
+
                     <Dialog>
                       <DialogTrigger asChild>
                         <Button className='w-full rounded-xl bg-[#3B82F6] py-6 text-base font-medium hover:bg-blue-600'>
@@ -224,7 +225,7 @@ export default function ChatPage() {
                         </Button>
                       </DialogTrigger>
 
-                      <DialogContent className='max-w-[320px] px-5 py-6'>
+                      <DialogContent className='w-full max-w-[400px] px-5 py-6 sm:max-w-[400px]'>
                         <DialogHeader className='flex flex-col items-center justify-center text-center sm:text-center'>
                           <DialogTitle className='text-lg font-bold text-gray-900'>
                             상담 예약을 취소할까요?

@@ -29,7 +29,7 @@ export default function AgencyLoginPage() {
     console.log(data);
     postLogin(data, {
       onSuccess: () => {
-        navigator('/mainpage');
+        navigator('/agency/main');
       },
     });
   };
